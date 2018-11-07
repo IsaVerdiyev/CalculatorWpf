@@ -1,4 +1,9 @@
-﻿using GalaSoft.MvvmLight;
+﻿using CalculatorLib;
+using CalculatorLib.CalculatorOperation;
+using CalculatorLib.CalculatorState;
+using CalculatorWpf.Navigation;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,81 +14,99 @@ namespace CalculatorWpf.ViewModels
 {
     class StandardCalcViewModel: ViewModelBase
     {
-        //#region Fields and Properties
+        #region Fields and Properties
 
-        //private string textBoxNumber;
-
-        //public string TextBoxNumber
-        //{
-        //    get { return textBoxNumber; }
-        //    set { textBoxNumber = value; }
-        //}
+        private string textBoxNumber;
+        public string TextBoxNumber { get => textBoxNumber; set => Set(ref textBoxNumber, value); }
 
 
-        //#endregion
+        #endregion
 
-        //#region Dependencies
+        #region Dependencies
 
-        //ICalculator calculator;
+        ICalculator calculator;
 
-        //INavigationService navigationService;
+        INavigator navigator;
 
-        //#endregion
+        #endregion
 
-        //#region Constructor
+        #region Constructor
 
-        //public StandardCalcViewModel(INavigationService navigationService)
-        //{
-        //    this.calculator = new Calculator.SimpleCalculator();
-        //    calculator.CalculatorState = new InitialState(calculator);
-        //    this.navigationService = navigationService;
-        //}
+        public StandardCalcViewModel(INavigator navigator)
+        {
+            this.calculator = new SimpleCalculator();
+            calculator.CalculatorState = new InitialState(calculator);
+            this.navigator = navigator;
+        }
 
-        //#endregion
+        #endregion
 
-        //#region Commands
+        #region Commands
 
-        //private RelayCommand<string> calculatorArithmeticOperationButtonCommand;
+        private RelayCommand<string> calculatorArithmeticOperationButtonCommand;
+        public RelayCommand<string> CalculatorArithmeticOperationButtonCommand
+        {
+            get
+            {
+                return calculatorArithmeticOperationButtonCommand ??
+                    (calculatorArithmeticOperationButtonCommand = new RelayCommand<String>(obj =>
+                    {
+                        string opText = obj as string;
+                        ICalculatorOperation operation;
+                        Double.TryParse(TextBoxNumber, out double second);
+                        if (opText == "+")
+                        {
+                            operation = new SumOperation { SecondArgument = second };
+                        }
+                        else if (opText == "-")
+                        {
+                            operation = new SubstractOperation { SecondArgument = second };
+                        }
+                        else if (opText == "*")
+                        {
+                            operation = new MultiplyOperation { SecondArgument = second };
+                        }
+                        else if (opText == "÷")
+                        {
+                            operation = new DevideOperation { SecondArgument = second };
+                        }
+                        else if (opText == "=")
+                        {
+                            operation = new EqualsOperation { SecondArgument = second };
+                        }
+                        else
+                        {
+                            operation = null;
+                        }
+                        TextBoxNumber = calculator.CalculatorState.PerformOperation(operation)?.ToString() ?? TextBoxNumber;
+                    }));
+            }
+        }
 
-        //public RelayCommand<string> CalculatorArithmeticOperationButtonCommand
-        //{
-        //    get
-        //    {
-        //        return calculatorArithmeticOperationButtonCommand ??
-        //            (calculatorArithmeticOperationButtonCommand = new RelayCommand<String>(obj =>
-        //            {
-        //                string opText = obj as string;
-        //                ICalculatorOperation operation;
-        //                Double.TryParse(TextBoxNumber, out double second);
-        //                if (opText == "+")
-        //                {
-        //                    operation = new SumOperation { SecondArgument = second };
-        //                }
-        //                else if (opText == "-")
-        //                {
-        //                    operation = new SubstractOperation { SecondArgument = second };
-        //                }
-        //                else if (opText == "*")
-        //                {
-        //                    operation = new MultiplyOperation { SecondArgument = second };
-        //                }
-        //                else if (opText == "÷")
-        //                {
-        //                    operation = new DevideOperation { SecondArgument = second };
-        //                }
-        //                else if (opText == "=")
-        //                {
-        //                    operation = new EqualsOperation { SecondArgument = second };
-        //                }
-        //                else
-        //                {
-        //                    operation = null;
-        //                }
-        //                TextBoxNumber = calculator.CalculatorState.PerformOperation(operation)?.ToString() ?? TextBoxNumber;
-        //            }));
-        //    }
-        //}
 
-        //#endregion
+        private RelayCommand<string> calculatorNumberButtonClickCommand;
+        public RelayCommand<string> CalculatorNumberButtonClickCommand
+        {
+            get
+            {
+                return calculatorNumberButtonClickCommand ??
+                    (calculatorNumberButtonClickCommand = new RelayCommand<string>((obj =>
+                    {
+                        calculator.CalculatorState.ResetVisibleInput(ref textBoxNumber, "");
+                        TextBoxNumber += (string)obj;
+                    }),
+                    obj =>
+                    {
+                        string text = obj as string;
+                        if (text == "." && (string.IsNullOrEmpty(TextBoxNumber) || TextBoxNumber.Contains(".")))
+                        {
+                            return false;
+                        }
+                        return true;
+                    }));
+            }
+        }
+
+        #endregion
     }
 }

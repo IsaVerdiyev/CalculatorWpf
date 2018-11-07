@@ -32,7 +32,8 @@
                         Text="Standard"/>
                 </StackPanel>
 
-                <TextBlock Grid.Row="1"/>
+                <TextBox Grid.Row="1"
+                         Text="{Binding TextBoxNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
@@ -69,33 +70,63 @@
                     <Button Content="CE"/>
                     <Button Content="C"/>
                     <Button Content="⌫"/>
-                    <Button Content="÷"/>
+                    <Button Content="÷"
+                            CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"                            
+                            Command="{Binding CalculatorArithmeticOperationButtonCommand}"/>
                     <Button Content="7" 
-                            Style="{StaticResource NumericButtons}"/>
+                            Style="{StaticResource NumericButtons}"
+                            CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"
+                            Command="{Binding CalculatorNumberButtonClickCommand}"/>
                     <Button Content="8"
+                            Command="{Binding CalculatorNumberButtonClickCommand}"
+                            CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"
                             Style="{StaticResource NumericButtons}"/>
                     <Button Content="9"
+                            Command="{Binding CalculatorNumberButtonClickCommand}"
+                            CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"
                             Style="{StaticResource NumericButtons}"/>
-                    <Button Content="×"/>
+                    <Button Content="×"
+                            CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"
+                            Command="{Binding CalculatorArithmeticOperationButtonCommand}"/>
                     <Button Content="4"
+                            Command="{Binding CalculatorNumberButtonClickCommand}"
+                            CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"
                             Style="{StaticResource NumericButtons}"/>
                     <Button Content="5"
+                            Command="{Binding CalculatorNumberButtonClickCommand}"
+                            CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"
                             Style="{StaticResource NumericButtons}"/>
                     <Button Content="6"
+                            Command="{Binding CalculatorNumberButtonClickCommand}"
+                            CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"
                             Style="{StaticResource NumericButtons}"/>
-                    <Button Content="−"/>
+                    <Button Content="−"
+                            CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"
+                            Command="{Binding CalculatorArithmeticOperationButtonCommand}"/>
                     <Button Content="1"
+                            Command="{Binding CalculatorNumberButtonClickCommand}"
+                            CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"
                             Style="{StaticResource NumericButtons}"/>
                     <Button Content="2"
+                            Command="{Binding CalculatorNumberButtonClickCommand}"
+                            CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"
                             Style="{StaticResource NumericButtons}"/>
                     <Button Content="3"
+                            Command="{Binding CalculatorNumberButtonClickCommand}"
+                            CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"
                             Style="{StaticResource NumericButtons}"/>
-                    <Button Content="+"/>
+                    <Button Content="+"
+                            CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"
+                            Command="{Binding CalculatorArithmeticOperationButtonCommand}"/>
                     <Button Content="±"/>
                     <Button Content="0"
+                            Command="{Binding CalculatorNumberButtonClickCommand}"
+                            CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"
                             Style="{StaticResource NumericButtons}"/>
                     <Button Content=","/>
-                    <Button Content="="/>
+                    <Button Content="="
+                            CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"
+                            Command="{Binding CalculatorArithmeticOperationButtonCommand}"/>
                 </UniformGrid>
 
             </Grid>

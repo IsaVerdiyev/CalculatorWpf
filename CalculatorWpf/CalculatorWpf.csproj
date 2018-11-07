@@ -185,7 +185,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\CalculatorLib\CalculatorLib.csproj">
+      <Project>{1f2555cf-91a6-4542-a5cd-e568c55969b1}</Project>
+      <Name>CalculatorLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Page Include="Resources\AppViewDictionary.xaml">
       <SubType>Designer</SubType>
