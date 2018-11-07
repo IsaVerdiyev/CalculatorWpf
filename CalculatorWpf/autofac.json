@@ -1,0 +1,7 @@
+{
+  "defaultAssembly": "CalculatorWpf",
+  "components": [
+    { "type": "CalculatorWpf.ViewModels.AppViewModel" },
+    { "type": "CalculatorWpf.ViewModels.StandardCalcViewModel"}
+  ]
+}

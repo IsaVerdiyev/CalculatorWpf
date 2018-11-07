@@ -1,0 +1,25 @@
+﻿using CalculatorWpf.Tools;
+using CalculatorWpf.Views;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
+
+namespace CalculatorWpf
+{
+    /// <summary>
+    /// Interaction logic for App.xaml
+    /// </summary>
+    public partial class App : Application
+    {
+        public App()
+        {
+            var window = new AppView();
+            window.DataContext = new ViewModelLocator().AppViewModel;
+            window.ShowDialog();
+        }
+    }
+}

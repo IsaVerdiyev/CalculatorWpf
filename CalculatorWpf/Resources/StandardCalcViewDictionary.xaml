@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:CalculatorWpf.Resources"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="CommonDictionary.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <sys:Double x:Key="RowHeightInStandardCalcViewParameterToMultiplyInDoubleConverter">0.06</sys:Double>
+    
+</ResourceDictionary>

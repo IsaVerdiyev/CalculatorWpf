@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:CalculatorWpf.Resources"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ViewDataTemplates.xaml"/>
+        <ResourceDictionary Source="CommonDictionary.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <sys:Double x:Key="FontSizeParameterToMultiplyInDoubleConverter">0.05</sys:Double>
+    
+</ResourceDictionary>
