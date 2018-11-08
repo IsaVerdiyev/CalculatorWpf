@@ -10,7 +10,7 @@
     <Window.Resources>
         <ResourceDictionary Source="../Resources/AppViewDictionary.xaml"/>
     </Window.Resources>
-    <Grid TextElement.FontSize="{Binding Path=Height, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource DoubleConverter}, ConverterParameter={StaticResource FontSizeParameterToMultiplyInDoubleConverter}}">
+    <Grid>
         <ContentControl Content="{Binding CurrentPage}"/>
     </Grid>
 </Window>

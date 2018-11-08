@@ -24,5 +24,7 @@ namespace CalculatorWpf.Views
         {
             InitializeComponent();
         }
+
+        
     }
 }

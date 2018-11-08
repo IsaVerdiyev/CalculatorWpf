@@ -18,9 +18,9 @@
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="30"/>
                     <RowDefinition Height="1*"/>
-                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="30"/>
                     <RowDefinition Height="3*"/>
                 </Grid.RowDefinitions>
 
@@ -28,12 +28,13 @@
                             Orientation="Horizontal">
                     <Button
                         Content="☰"/>
-                    <TextBlock
-                        Text="Standard"/>
+                    <Label
+                        Content="Standard"/>
                 </StackPanel>
 
                 <TextBox Grid.Row="1"
-                         Text="{Binding TextBoxNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                         Text="{Binding TextBoxNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource ResultTextBoxStyle}"/>
 
                 <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
@@ -51,7 +52,7 @@
                         <Button
                             Content="M+"
                             Style="{StaticResource BlackSpecialMButtons}"/>
-                        <Button 
+                        <Button
                             Content="M-"
                             Style="{StaticResource BlackSpecialMButtons}"/>
                         <Button
@@ -132,12 +133,12 @@
             </Grid>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="30"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <TextBlock 
-                    Text="History"/>
+                <Label
+                    Content="History"/>
             </Grid>
         </Grid>
     </Grid>
