@@ -25,6 +25,11 @@
 
     <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}" x:Key="ResultTextBoxStyle">
         <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="HorizontalContentAlignment" Value="Right"/>
+    </Style>
+
+    <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}" x:Key="ExpressionLabel">
+        <Setter Property="HorizontalContentAlignment" Value="Right"/>
     </Style>
     
     <Style TargetType="Button" x:Key="NumericButtons" BasedOn="{StaticResource {x:Type Button}}">
@@ -53,5 +58,10 @@
         <Setter Property="Background" Value="LightGray"/>
     </Style>
 
-    
+    <Style TargetType="ListBox" x:Key="HistoryListBoxStyle">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+
+
 </ResourceDictionary>

@@ -16,8 +16,11 @@ namespace CalculatorWpf.ViewModels
     {
         #region Fields and Properties
 
-        private string textBoxNumber;
-        public string TextBoxNumber { get => textBoxNumber; set => Set(ref textBoxNumber, value); }
+        private string resultNumber;
+        public string ResultNumber { get => resultNumber; set => Set(ref resultNumber, value); }
+
+        private string expression;
+        public string Expression { get => expression; set => Set(ref expression, value); }
 
 
         #endregion
@@ -53,7 +56,7 @@ namespace CalculatorWpf.ViewModels
                     {
                         string opText = obj as string;
                         ICalculatorOperation operation;
-                        Double.TryParse(TextBoxNumber, out double second);
+                        Double.TryParse(ResultNumber, out double second);
                         if (opText == "+")
                         {
                             operation = new SumOperation { SecondArgument = second };
@@ -78,7 +81,7 @@ namespace CalculatorWpf.ViewModels
                         {
                             operation = null;
                         }
-                        TextBoxNumber = calculator.CalculatorState.PerformOperation(operation)?.ToString() ?? TextBoxNumber;
+                        ResultNumber = calculator.CalculatorState.PerformOperation(operation)?.ToString() ?? ResultNumber;
                     }));
             }
         }
@@ -92,13 +95,13 @@ namespace CalculatorWpf.ViewModels
                 return calculatorNumberButtonClickCommand ??
                     (calculatorNumberButtonClickCommand = new RelayCommand<string>((obj =>
                     {
-                        calculator.CalculatorState.ResetVisibleInput(ref textBoxNumber, "");
-                        TextBoxNumber += (string)obj;
+                        calculator.CalculatorState.ResetVisibleInput(ref resultNumber, "");
+                        ResultNumber += (string)obj;
                     }),
                     obj =>
                     {
                         string text = obj as string;
-                        if (text == "." && (string.IsNullOrEmpty(TextBoxNumber) || TextBoxNumber.Contains(".")))
+                        if (text == "." && (string.IsNullOrEmpty(ResultNumber) || ResultNumber.Contains(".")))
                         {
                             return false;
                         }

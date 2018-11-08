@@ -31,10 +31,20 @@
                     <Label
                         Content="Standard"/>
                 </StackPanel>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1.5*"/>
+                        <RowDefinition Height="3*"/>
+                    </Grid.RowDefinitions>
 
-                <TextBox Grid.Row="1"
-                         Text="{Binding TextBoxNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         Style="{StaticResource ResultTextBoxStyle}"/>
+                    <Label Grid.Row="0"
+                           Content="{Binding Expression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <TextBox Grid.Row="1"
+                             Text="{Binding ResultNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Style="{StaticResource ResultTextBoxStyle}"/>
+                    
+                </Grid>
 
                 <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
@@ -139,6 +149,8 @@
 
                 <Label
                     Content="History"/>
+                <ListBox Grid.Row="1"
+                         Style="{StaticResource HistoryListBoxStyle}"/>
             </Grid>
         </Grid>
     </Grid>
