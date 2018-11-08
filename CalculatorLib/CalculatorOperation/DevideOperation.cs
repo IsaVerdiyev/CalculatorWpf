@@ -10,7 +10,7 @@ namespace CalculatorLib.CalculatorOperation
         public double? SecondArgument { get; set; }
         public double? Result { get; set; }
 
-        public Action Operation { get => (() => Result = FirstArgument + SecondArgument); }
+        public Action Operation { get => (() => Result = FirstArgument / SecondArgument); }
 
         public Func<bool> ValidateChecker { get => (() => SecondArgument != 0); }
     }

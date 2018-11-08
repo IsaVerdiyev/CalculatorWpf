@@ -61,11 +61,11 @@ namespace CalculatorWpf.ViewModels
                         {
                             operation = new SumOperation { SecondArgument = second };
                         }
-                        else if (opText == "-")
+                        else if (opText == "−")
                         {
                             operation = new SubstractOperation { SecondArgument = second };
                         }
-                        else if (opText == "*")
+                        else if (opText == "×")
                         {
                             operation = new MultiplyOperation { SecondArgument = second };
                         }
