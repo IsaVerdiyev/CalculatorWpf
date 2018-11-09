@@ -1,4 +1,4 @@
-﻿using CalculatorLib.CalculatorOperation;
+﻿using CalculatorLib.CalcOperation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,18 +7,39 @@ namespace CalculatorLib.CalculatorState
 {
     public class InitialState: AbstractCalculatorState
     {
-        public override double? PerformOperation(ICalculatorOperation operation)
+        public override void PerformOperation(CalculatorOperation operation)
         {
-            return null;
+            if (Reset)
+            {
+                return;
+            }
+            calculator.CalculatorState = new OperationChoosingState(calculator);
+            calculator.CalculatorState.CalculationOperation = new CalculatorOperation
+            {
+                FirstArgument = operation.SecondArgument,
+                ExecuteOperation = operation.ExecuteOperation,
+                OperationSymbol = operation.OperationSymbol
+            };
         }
 
         public InitialState(ICalculator calculator) : base(calculator) { }
 
 
-        public override void ResetVisibleInput<T>(ref T field, T value)
+        
+
+        public override void ContinueExpression(CalculatorOperation operation)
         {
-            calculator.CalculatorState = new FirstArgumentEnteringState(calculator);
-            field = value;
+            return;
+        }
+
+        public override bool FinishExpression(CalculatorOperation operation)
+        {
+            return false;
+        }
+
+        public override void TakingInputActions()
+        {
+            return;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using CalculatorLib.CalculatorOperation;
+﻿using CalculatorLib.CalcOperation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,16 +15,24 @@ namespace CalculatorLib.CalculatorState
             reset = false;
         }
 
-        public abstract double? PerformOperation(ICalculatorOperation operation);
+        public abstract void PerformOperation(CalculatorOperation operation);
 
-        public abstract void ResetVisibleInput<T>(ref T field, T value);
+        
 
-        ICalculatorOperation calculationOperation;
+        CalculatorOperation calculationOperation;
 
-        public ICalculatorOperation CalculationOperation { get => calculationOperation; set => calculationOperation = value; }
+        public CalculatorOperation CalculationOperation { get => calculationOperation; set => calculationOperation = value; }
 
         protected bool reset;
 
-        public bool Reset { get => reset; }
+        public bool Reset { get => reset; set => reset = value; }
+
+        public abstract void ContinueExpression(CalculatorOperation operation);
+
+        public abstract bool FinishExpression(CalculatorOperation operation);
+
+        public abstract void TakingInputActions();
+
+        //public bool Reset { get => reset; }
     }
 }

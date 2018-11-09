@@ -41,16 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalculatorHistory\ICalculatorHistory.cs" />
-    <Compile Include="CalculatorOperation\DevideOperation.cs" />
-    <Compile Include="CalculatorOperation\EqualsOperation.cs" />
-    <Compile Include="CalculatorOperation\ICalculatorOperation.cs" />
-    <Compile Include="CalculatorOperation\MultiplyOperation.cs" />
-    <Compile Include="CalculatorOperation\SubstractOperation.cs" />
-    <Compile Include="CalculatorOperation\SumOperation.cs" />
+    <Compile Include="CalcOperation\CalculatorOperation.cs" />
     <Compile Include="CalculatorState\AbstractCalculatorState.cs" />
-    <Compile Include="CalculatorState\FirstArgumentEnteringState.cs" />
     <Compile Include="CalculatorState\InitialState.cs" />
-    <Compile Include="CalculatorState\SecondArgumentEnteringState.cs" />
+    <Compile Include="CalculatorState\CalculationState.cs" />
+    <Compile Include="CalculatorState\OperationChoosingState.cs" />
     <Compile Include="ICalculator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleCalculator.cs" />

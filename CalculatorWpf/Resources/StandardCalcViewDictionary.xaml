@@ -6,7 +6,5 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="CommonDictionary.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-
-    <sys:Double x:Key="RowHeightInStandardCalcViewParameterToMultiplyInDoubleConverter">0.06</sys:Double>
     
 </ResourceDictionary>

@@ -1,5 +1,5 @@
 ﻿using CalculatorLib;
-using CalculatorLib.CalculatorOperation;
+using CalculatorLib.CalcOperation;
 using CalculatorLib.CalculatorState;
 using CalculatorWpf.Navigation;
 using GalaSoft.MvvmLight;
@@ -16,13 +16,20 @@ namespace CalculatorWpf.ViewModels
     {
         #region Fields and Properties
 
-        private string resultNumber;
-        public string ResultNumber { get => resultNumber; set => Set(ref resultNumber, value); }
+        private double number;
+        public string Number {
+            get => number.ToString();
+            set 
+            {
+                Set(ref number, GetNumberFromString(value));
+            }
+        }
 
         private string expression;
         public string Expression { get => expression; set => Set(ref expression, value); }
 
-
+        private string operationSymbol;
+        public string OperationSymbol { get => operationSymbol; set => Set(ref operationSymbol, value); }
         #endregion
 
         #region Dependencies
@@ -55,33 +62,56 @@ namespace CalculatorWpf.ViewModels
                     (calculatorArithmeticOperationButtonCommand = new RelayCommand<String>(obj =>
                     {
                         string opText = obj as string;
-                        ICalculatorOperation operation;
-                        Double.TryParse(ResultNumber, out double second);
-                        if (opText == "+")
+                        CalculatorOperation operation;
+                        operation = new CalculatorOperation
                         {
-                            operation = new SumOperation { SecondArgument = second };
-                        }
-                        else if (opText == "−")
+                            SecondArgument = number,
+                            OperationSymbol = opText
+                        };
+
+                        if (opText == "=")
                         {
-                            operation = new SubstractOperation { SecondArgument = second };
+                            if (calculator.CalculatorState is CalculationState)
+                            {
+                                //calculator.CalculatorState.PerformOperation(operation).ToString() ?? Number;
+                                //if (calculator.CalculatorState.ChangeState())
+                                //{
+                                //    Expression += $"{calculator.CalculatorState.CalculationOperation.FirstArgument?.ToString()} {calculator.CalculatorState.CalculationOperation.OperationSymbol} {calculator.CalculatorState.CalculationOperation.SecondArgument?.ToString()} {opText} {Number} ";
+                                //}
+                                //calculator.CalculatorState.FinishExpression();
+                            }
                         }
-                        else if (opText == "×")
-                        {
-                            operation = new MultiplyOperation { SecondArgument = second };
+                        else {
+                            if (opText == "+")
+                            {
+                                operation.ExecuteOperation = (argument1, argument2) =>  argument1 + argument2;
+                                
+                            }
+                            else if (opText == "−")
+                            {
+                                operation.ExecuteOperation = (argument1, argument2) => argument1 - argument2;
+                            }
+                            else if (opText == "×")
+                            {
+                                operation.ExecuteOperation = (argument1, argument2) => argument1 * argument2;
+                            }
+                            else if (opText == "÷")
+                            {
+                                operation.ExecuteOperation = (argument1, argument2) => argument1 / argument2;
+                            }
+                            else
+                            {
+                                operation = null;
+                            }
+                            calculator.CalculatorState.PerformOperation(operation);
+                            if (calculator.CalculatorState.Reset)
+                            {
+                                Expression += $" {OperationSymbol} {operation.SecondArgument}";
+                                Number = calculator.CalculatorState.CalculationOperation.FirstArgument.ToString();
+                            }
+                            calculator.CalculatorState.ContinueExpression(operation);
+                            OperationSymbol = operation.OperationSymbol;
                         }
-                        else if (opText == "÷")
-                        {
-                            operation = new DevideOperation { SecondArgument = second };
-                        }
-                        else if (opText == "=")
-                        {
-                            operation = new EqualsOperation { SecondArgument = second };
-                        }
-                        else
-                        {
-                            operation = null;
-                        }
-                        ResultNumber = calculator.CalculatorState.PerformOperation(operation)?.ToString() ?? ResultNumber;
                     }));
             }
         }
@@ -95,19 +125,38 @@ namespace CalculatorWpf.ViewModels
                 return calculatorNumberButtonClickCommand ??
                     (calculatorNumberButtonClickCommand = new RelayCommand<string>((obj =>
                     {
-                        calculator.CalculatorState.ResetVisibleInput(ref resultNumber, "");
-                        ResultNumber += (string)obj;
+                        calculator.CalculatorState.TakingInputActions();
+                        if (calculator.CalculatorState.Reset)
+                        {
+                            Number = (string)obj;
+                            calculator.CalculatorState.Reset = false;
+                        }
+                        else
+                        {
+                            Number += (string)obj;
+                        }
                     }),
                     obj =>
                     {
                         string text = obj as string;
-                        if (text == "." && (string.IsNullOrEmpty(ResultNumber) || ResultNumber.Contains(".")))
+                        if (text == "." && (string.IsNullOrEmpty(Number) || Number.Contains(".")))
                         {
                             return false;
                         }
                         return true;
                     }));
             }
+        }
+
+        #endregion
+
+
+        #region Functions
+
+        double GetNumberFromString(string numberText)
+        {
+            double.TryParse(numberText, out double number);
+            return number;
         }
 
         #endregion

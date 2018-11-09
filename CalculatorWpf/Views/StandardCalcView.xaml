@@ -37,11 +37,20 @@
                         <RowDefinition Height="3*"/>
                     </Grid.RowDefinitions>
 
-                    <Label Grid.Row="0"
-                           Content="{Binding Expression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label
+                           Content="{Binding Expression, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                           Style="{StaticResource ResultTextBoxStyle}"/>
 
-                    <TextBox Grid.Row="1"
-                             Text="{Binding ResultNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        <Label Grid.Column="1"
+                               Content="{Binding OperationSymbol, Mode=OneWay}"/>
+                    </Grid>
+                    <Label Grid.Row="1"
+                             Content="{Binding Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              Style="{StaticResource ResultTextBoxStyle}"/>
                     
                 </Grid>

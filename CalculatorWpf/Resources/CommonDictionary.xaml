@@ -23,7 +23,7 @@
     <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type Control}}"/>
 
 
-    <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}" x:Key="ResultTextBoxStyle">
+    <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}" x:Key="ResultTextBoxStyle">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="HorizontalContentAlignment" Value="Right"/>
     </Style>

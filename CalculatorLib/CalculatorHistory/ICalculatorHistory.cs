@@ -1,4 +1,4 @@
-﻿using CalculatorLib.CalculatorOperation;
+﻿using CalculatorLib.CalcOperation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,9 +7,9 @@ namespace CalculatorLib.CalculatorHistory
 {
     public interface ICalculatorHistory
     {
-        List<ICalculatorOperation> History { get; set; }
+        List<CalcOperation.CalculatorOperation> History { get; set; }
 
-        void AddToHistory(ICalculatorOperation calculatorOperation);
+        void AddToHistory(CalcOperation.CalculatorOperation calculatorOperation);
         void ClearHistory();
     }
 }
