@@ -22,7 +22,7 @@ namespace CalculatorLib.CalculatorState
             };
         }
 
-        public InitialState(ICalculator calculator) : base(calculator) { }
+        public InitialState(ICalculator calculator) : base(calculator) { Reset = true; }
 
 
         

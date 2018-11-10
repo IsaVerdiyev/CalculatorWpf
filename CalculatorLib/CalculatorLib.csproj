@@ -43,6 +43,7 @@
     <Compile Include="CalculatorHistory\ICalculatorHistory.cs" />
     <Compile Include="CalcOperation\CalculatorOperation.cs" />
     <Compile Include="CalculatorState\AbstractCalculatorState.cs" />
+    <Compile Include="CalculatorState\CalculatorStateExtension.cs" />
     <Compile Include="CalculatorState\InitialState.cs" />
     <Compile Include="CalculatorState\CalculationState.cs" />
     <Compile Include="CalculatorState\OperationChoosingState.cs" />

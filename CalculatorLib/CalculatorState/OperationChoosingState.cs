@@ -16,17 +16,19 @@ namespace CalculatorLib.CalculatorState
 
         public OperationChoosingState(ICalculator calculator): base(calculator)
         {
-            Reset = true; 
+            Reset = false; 
         }
 
         public override bool FinishExpression(CalculatorOperation operation)
         {
-            return false;
+            //CalculationOperation.Result = CalculationOperation.ExecuteOperation(CalculationOperation.FirstArgument, operation.SecondArgument);
+            calculator.CalculatorState = new InitialState(calculator) { Reset = true };
+            calculator.CalculatorState.CalculationOperation = this.CalculationOperation;
+            return true;
         }
 
         public override void PerformOperation(CalculatorOperation operation)
         {
-            Reset = false;
             CalculationOperation.ExecuteOperation = operation.ExecuteOperation;
             CalculationOperation.OperationSymbol = operation.OperationSymbol;
         }

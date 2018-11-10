@@ -6,8 +6,11 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CalculatorWpf.ViewModels
@@ -16,20 +19,26 @@ namespace CalculatorWpf.ViewModels
     {
         #region Fields and Properties
 
-        private double number;
+        private string number;
         public string Number {
-            get => number.ToString();
-            set 
+            get => number;
+            set
             {
-                Set(ref number, GetNumberFromString(value));
+                Set(ref number, value);
+                CalculatorNumberButtonClickCommand.RaiseCanExecuteChanged();
             }
         }
 
         private string expression;
         public string Expression { get => expression; set => Set(ref expression, value); }
 
-        private string operationSymbol;
-        public string OperationSymbol { get => operationSymbol; set => Set(ref operationSymbol, value); }
+        private ObservableCollection<string> history = new ObservableCollection<string>();
+        public ObservableCollection<string> History { get => history; set => Set(ref history, value); }
+
+        private string decimalSeparator;
+        public string DecimalSeparator { get => decimalSeparator; set => Set(ref decimalSeparator, value); }
+
+
         #endregion
 
         #region Dependencies
@@ -47,6 +56,10 @@ namespace CalculatorWpf.ViewModels
             this.calculator = new SimpleCalculator();
             calculator.CalculatorState = new InitialState(calculator);
             this.navigator = navigator;
+
+            string CultureName = Thread.CurrentThread.CurrentCulture.Name;
+            CultureInfo ci = new CultureInfo(CultureName);
+            DecimalSeparator = ci.NumberFormat.NumberDecimalSeparator;
         }
 
         #endregion
@@ -65,21 +78,21 @@ namespace CalculatorWpf.ViewModels
                         CalculatorOperation operation;
                         operation = new CalculatorOperation
                         {
-                            SecondArgument = number,
+                            SecondArgument = GetNumberFromString(Number),
                             OperationSymbol = opText
                         };
 
                         if (opText == "=")
                         {
-                            if (calculator.CalculatorState is CalculationState)
-                            {
-                                //calculator.CalculatorState.PerformOperation(operation).ToString() ?? Number;
-                                //if (calculator.CalculatorState.ChangeState())
-                                //{
-                                //    Expression += $"{calculator.CalculatorState.CalculationOperation.FirstArgument?.ToString()} {calculator.CalculatorState.CalculationOperation.OperationSymbol} {calculator.CalculatorState.CalculationOperation.SecondArgument?.ToString()} {opText} {Number} ";
-                                //}
-                                //calculator.CalculatorState.FinishExpression();
-                            }
+                            calculator.CalculatorState.Reset = true;
+                            calculator.CalculatorState.PerformOperation(operation);
+                            Expression = calculator.CalculatorState.GetFinishedExpression(Expression, operation);
+                            calculator.CalculatorState.FinishExpression(operation);
+                            History.Add(Expression);
+                            Expression = null;
+                            Number = calculator.CalculatorState.CalculationOperation?.Result.ToString();
+                            return;
+
                         }
                         else {
                             if (opText == "+")
@@ -103,14 +116,14 @@ namespace CalculatorWpf.ViewModels
                             {
                                 operation = null;
                             }
+                            calculator.CalculatorState.Reset = false;
                             calculator.CalculatorState.PerformOperation(operation);
-                            if (calculator.CalculatorState.Reset)
-                            {
-                                Expression += $" {OperationSymbol} {operation.SecondArgument}";
-                                Number = calculator.CalculatorState.CalculationOperation.FirstArgument.ToString();
-                            }
+
+                            Expression = calculator.CalculatorState.GenerateMathExpression(Expression, operation);
+                            Number = calculator.CalculatorState.CalculationOperation.Result.ToString();
+
                             calculator.CalculatorState.ContinueExpression(operation);
-                            OperationSymbol = operation.OperationSymbol;
+                            
                         }
                     }));
             }
@@ -139,7 +152,7 @@ namespace CalculatorWpf.ViewModels
                     obj =>
                     {
                         string text = obj as string;
-                        if (text == "." && (string.IsNullOrEmpty(Number) || Number.Contains(".")))
+                        if (text == DecimalSeparator && (string.IsNullOrEmpty(Number) || Number.Contains(DecimalSeparator)))
                         {
                             return false;
                         }
@@ -147,6 +160,15 @@ namespace CalculatorWpf.ViewModels
                     }));
             }
         }
+
+        private RelayCommand eraseNumberCommand;
+        public RelayCommand EraseNumberCommand
+        {
+            get => eraseNumberCommand ?? (eraseNumberCommand = new RelayCommand(() => Number =  Number?.Remove(Number.Count() - 1, 1)));
+        }
+
+        private RelayCommand makeZeroCurrentNumberCommand;
+        public RelayCommand MakeZeroCurrentNumberCommand { get => makeZeroCurrentNumberCommand ?? (makeZeroCurrentNumberCommand = new RelayCommand(() => Number = "0")); }
 
         #endregion
 

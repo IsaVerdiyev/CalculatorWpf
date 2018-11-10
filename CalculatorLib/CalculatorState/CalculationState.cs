@@ -11,24 +11,25 @@ namespace CalculatorLib.CalculatorState
 
         public override void ContinueExpression(CalculatorOperation operation)
         {
-           
+
+            calculator.CalculatorState = new OperationChoosingState(calculator) { Reset = true };
             CalculationOperation.FirstArgument = CalculationOperation.Result;
             CalculationOperation.ExecuteOperation = operation.ExecuteOperation;
-            Reset = true;
+            calculator.CalculatorState.CalculationOperation = CalculationOperation;
         }
 
         public override bool FinishExpression(CalculatorOperation operation)
         {
-            if(Reset)
-            {
-                CalculationOperation.Result = CalculationOperation.FirstArgument;
-            }
-            else
-            {
-                CalculationOperation.Result = operation.ExecuteOperation(CalculationOperation.FirstArgument, operation.SecondArgument);
-            }
+            //if(Reset)
+            //{
+            //    CalculationOperation.Result = CalculationOperation.FirstArgument;
+            //}
+            //else
+            //{
+            //    CalculationOperation.Result = CalculationOperation.ExecuteOperation(CalculationOperation.FirstArgument, operation.SecondArgument);
+            //}
             calculator.CalculatorState = new InitialState(calculator) {
-                Reset = false,
+                Reset = true,
                 CalculationOperation = this.CalculationOperation
             };
             return true;
@@ -36,12 +37,6 @@ namespace CalculatorLib.CalculatorState
 
         public override void PerformOperation(CalculatorOperation operation)
         {
-            if (Reset)
-            {
-                CalculationOperation.ExecuteOperation = operation.ExecuteOperation;
-                CalculationOperation.OperationSymbol = operation.OperationSymbol;
-                return;
-            }
             CalculationOperation.SecondArgument = operation.SecondArgument;
             CalculationOperation.Result = CalculationOperation.ExecuteOperation(CalculationOperation.FirstArgument, CalculationOperation.SecondArgument);
             calculator.CalculatorHistory?.AddToHistory(CalculationOperation);
