@@ -84,11 +84,8 @@ namespace CalculatorWpf.ViewModels
 
                         if (opText == "=")
                         {
-                            calculator.CalculatorState.Reset = true;
-                            calculator.CalculatorState.PerformOperation(operation);
-                            Expression = calculator.CalculatorState.GetFinishedExpression(Expression, operation);
                             calculator.CalculatorState.FinishExpression(operation);
-                            History.Add(Expression);
+                            History.Add(calculator.CalculatorState.Expression);
                             Expression = null;
                             Number = calculator.CalculatorState.CalculationOperation?.Result.ToString();
                             return;
@@ -116,13 +113,11 @@ namespace CalculatorWpf.ViewModels
                             {
                                 operation = null;
                             }
-                            calculator.CalculatorState.Reset = false;
                             calculator.CalculatorState.PerformOperation(operation);
 
-                            Expression = calculator.CalculatorState.GenerateMathExpression(Expression, operation);
+                            Expression = calculator.CalculatorState.Expression;
                             Number = calculator.CalculatorState.CalculationOperation.Result.ToString();
 
-                            calculator.CalculatorState.ContinueExpression(operation);
                             
                         }
                     }));

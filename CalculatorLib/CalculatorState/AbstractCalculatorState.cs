@@ -17,7 +17,15 @@ namespace CalculatorLib.CalculatorState
 
         public abstract void PerformOperation(CalculatorOperation operation);
 
-        
+        private string expression;
+
+        public string Expression
+        {
+            get { return expression; }
+            set { expression = value; }
+        }
+
+
 
         CalculatorOperation calculationOperation;
 
@@ -27,9 +35,9 @@ namespace CalculatorLib.CalculatorState
 
         public bool Reset { get => reset; set => reset = value; }
 
-        public abstract void ContinueExpression(CalculatorOperation operation);
+        //public abstract void ContinueExpression(CalculatorOperation operation);
 
-        public abstract bool FinishExpression(CalculatorOperation operation);
+        public abstract void FinishExpression(CalculatorOperation operation);
 
         public abstract void TakingInputActions();
 

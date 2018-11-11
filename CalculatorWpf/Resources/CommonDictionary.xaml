@@ -5,7 +5,8 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <conv:DoubleConverter x:Key="DoubleConverter"/>
-
+    <conv:RoutedEventArgsToStringConverter x:Key="RoutedEventArgsToStringConverter"/>
+    
     <sys:Double x:Key="FontSizeParameter">0.5</sys:Double>
 
     <Style TargetType="Control">
