@@ -37,7 +37,7 @@ namespace CalculatorLib.CalculatorState
             CalculationOperation.SecondArgument = operation.SecondArgument;
             CalculationOperation.Result = CalculationOperation.ExecuteOperation(CalculationOperation.FirstArgument, CalculationOperation.SecondArgument);
             calculator.CalculatorHistory?.AddToHistory(CalculationOperation);
-            Expression += $"{CalculationOperation.SecondArgument} {operation.OperationSymbol}";
+            Expression += $"{CalculationOperation.SecondArgument} {operation.OperationSymbol} ";
             CalculationOperation.FirstArgument = CalculationOperation.Result;
             calculator.CalculatorState = new OperationChoosingState(calculator);
             calculator.CalculatorState.CalculationOperation = CalculationOperation;

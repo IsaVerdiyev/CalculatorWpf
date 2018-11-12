@@ -12,15 +12,18 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace CalculatorWpf.ViewModels
 {
-    class StandardCalcViewModel: ViewModelBase
+    class StandardCalcViewModel : ViewModelBase
     {
         #region Fields and Properties
 
         private string number;
-        public string Number {
+        public string Number
+        {
             get => number;
             set
             {
@@ -66,24 +69,28 @@ namespace CalculatorWpf.ViewModels
 
         #region Commands
 
-        private RelayCommand<string> calculatorArithmeticOperationButtonCommand;
-        public RelayCommand<string> CalculatorArithmeticOperationButtonCommand
+        private RelayCommand<Key> calculatorArithmeticOperationButtonCommand;
+        public RelayCommand<Key> CalculatorArithmeticOperationButtonCommand
         {
             get
             {
                 return calculatorArithmeticOperationButtonCommand ??
-                    (calculatorArithmeticOperationButtonCommand = new RelayCommand<String>(obj =>
+                    (calculatorArithmeticOperationButtonCommand = new RelayCommand<Key>(passedKey =>
                     {
-                        string opText = obj as string;
+                        if(passedKey == Key.Back)
+                        {
+                            EraseNumberCommand.Execute(null);
+                            return;
+                        }
                         CalculatorOperation operation;
                         operation = new CalculatorOperation
                         {
                             SecondArgument = GetNumberFromString(Number),
-                            OperationSymbol = opText
                         };
 
-                        if (opText == "=")
+                        if (passedKey == Key.Enter)
                         {
+                            operation.OperationSymbol = "=";
                             calculator.CalculatorState.FinishExpression(operation);
                             History.Add(calculator.CalculatorState.Expression);
                             Expression = null;
@@ -91,34 +98,39 @@ namespace CalculatorWpf.ViewModels
                             return;
 
                         }
-                        else {
-                            if (opText == "+")
+                        else
+                        {
+                            if (passedKey == Key.Add)
                             {
-                                operation.ExecuteOperation = (argument1, argument2) =>  argument1 + argument2;
-                                
+                                operation.OperationSymbol = "+";
+                                operation.ExecuteOperation = (argument1, argument2) => argument1 + argument2;
+
                             }
-                            else if (opText == "−")
+                            else if (passedKey == Key.Subtract)
                             {
+                                operation.OperationSymbol = "−";
                                 operation.ExecuteOperation = (argument1, argument2) => argument1 - argument2;
                             }
-                            else if (opText == "×")
+                            else if (passedKey == Key.Multiply)
                             {
+                                operation.OperationSymbol = "×";
                                 operation.ExecuteOperation = (argument1, argument2) => argument1 * argument2;
                             }
-                            else if (opText == "÷")
+                            else if (passedKey == Key.Divide)
                             {
+                                operation.OperationSymbol = "÷";
                                 operation.ExecuteOperation = (argument1, argument2) => argument1 / argument2;
                             }
                             else
                             {
-                                operation = null;
+                                return;
                             }
                             calculator.CalculatorState.PerformOperation(operation);
 
                             Expression = calculator.CalculatorState.Expression;
                             Number = calculator.CalculatorState.CalculationOperation.Result.ToString();
 
-                            
+
                         }
                     }));
             }
@@ -131,23 +143,27 @@ namespace CalculatorWpf.ViewModels
             get
             {
                 return calculatorNumberButtonClickCommand ??
-                    (calculatorNumberButtonClickCommand = new RelayCommand<string>((obj =>
+                    (calculatorNumberButtonClickCommand = new RelayCommand<string>((input =>
                     {
+                        if (!double.TryParse(input, out double result) && input != DecimalSeparator)
+                        {
+                            return;
+                        }
                         calculator.CalculatorState.TakingInputActions();
                         if (calculator.CalculatorState.Reset)
                         {
-                            Number = (string)obj;
+                            Number = input;
                             calculator.CalculatorState.Reset = false;
                         }
                         else
                         {
-                            Number += (string)obj;
+                            Number += input;
                         }
                     }),
-                    obj =>
+                    input =>
                     {
-                        string text = obj as string;
-                        if (text == DecimalSeparator && (string.IsNullOrEmpty(Number) || Number.Contains(DecimalSeparator)))
+                        
+                        if (input == DecimalSeparator && (string.IsNullOrEmpty(Number) || Number.Contains(DecimalSeparator)))
                         {
                             return false;
                         }
@@ -159,11 +175,15 @@ namespace CalculatorWpf.ViewModels
         private RelayCommand eraseNumberCommand;
         public RelayCommand EraseNumberCommand
         {
-            get => eraseNumberCommand ?? (eraseNumberCommand = new RelayCommand(() => Number =  Number?.Remove(Number.Count() - 1, 1)));
+            get => eraseNumberCommand ?? (eraseNumberCommand = new RelayCommand(() => Number = Number?.Remove(Number.Count() - 1, 1)));
         }
 
         private RelayCommand makeZeroCurrentNumberCommand;
         public RelayCommand MakeZeroCurrentNumberCommand { get => makeZeroCurrentNumberCommand ?? (makeZeroCurrentNumberCommand = new RelayCommand(() => Number = "0")); }
+
+
+        
+
 
         #endregion
 

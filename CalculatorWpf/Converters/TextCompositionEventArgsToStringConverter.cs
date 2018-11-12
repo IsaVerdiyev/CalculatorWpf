@@ -11,12 +11,11 @@ using System.Windows.Input;
 
 namespace CalculatorWpf.Converters
 {
-    class RoutedEventArgsToStringConverter : IEventArgsConverter
+    class TextCompositionEventArgsToStringConverter : IEventArgsConverter
     {
         public object Convert(object value, object parameter)
         {
-            var passedEventArgs = (KeyEventArgs)value;
-            return passedEventArgs.Key.ToString();
+            return ((TextCompositionEventArgs)value).Text;
         }
     }
 }

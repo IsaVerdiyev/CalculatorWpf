@@ -5,9 +5,12 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <conv:DoubleConverter x:Key="DoubleConverter"/>
-    <conv:RoutedEventArgsToStringConverter x:Key="RoutedEventArgsToStringConverter"/>
-    
+    <conv:TextCompositionEventArgsToStringConverter x:Key="TextCompositionEventArgsToStringConverter"/>
+    <conv:KeyEventArgsToKeyConverter x:Key="KeyEventArgsToKeyConverter"/>
+
     <sys:Double x:Key="FontSizeParameter">0.5</sys:Double>
+
+    
 
     <Style TargetType="Control">
         <Setter Property="TextElement.FontSize" Value="{Binding RelativeSource={RelativeSource self}, Path=ActualHeight,UpdateSourceTrigger=PropertyChanged,  Converter={StaticResource DoubleConverter}, ConverterParameter={StaticResource FontSizeParameter}}"/>

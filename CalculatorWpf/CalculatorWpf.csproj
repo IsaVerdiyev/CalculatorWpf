@@ -140,7 +140,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Converters\RoutedEventArgsToStringConverter.cs" />
+    <Compile Include="Converters\KeyEventArgsToKeyConverter.cs" />
+    <Compile Include="Converters\TextCompositionEventArgsToStringConverter.cs" />
     <Compile Include="Tools\ViewModelLocator.cs" />
     <Compile Include="ViewModels\AppViewModel.cs" />
     <Compile Include="ViewModels\StandardCalcViewModel.cs" />

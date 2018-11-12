@@ -6,22 +6,31 @@
              xmlns:mvvm="http://www.galasoft.ch/mvvmlight"
              xmlns:local="clr-namespace:CalculatorWpf.Views"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:key="clr-namespace:System.Windows.Input;assembly=WindowsBase"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             Focusable="True"
+             Loaded="UserControl_Loaded">
     <UserControl.Resources>
         <ResourceDictionary Source="../Resources/StandardCalcViewDictionary.xaml"/>
     </UserControl.Resources>
-    <Grid 
-        Style="{StaticResource MainGridStyle}">
-        <i:Interaction.Triggers>
-            <i:EventTrigger EventName="KeyDown">
-                <mvvm:EventToCommand 
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="KeyDown">
+            <mvvm:EventToCommand Command="{Binding CalculatorArithmeticOperationButtonCommand}"
+                                 PassEventArgsToCommand="True"
+                                 EventArgsConverter="{StaticResource KeyEventArgsToKeyConverter}"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="TextInput">
+            <mvvm:EventToCommand 
                     Command="{Binding CalculatorNumberButtonClickCommand}"
                     PassEventArgsToCommand="true"
-                    EventArgsConverter="{StaticResource RoutedEventArgsToStringConverter}"/>
-            </i:EventTrigger>
-        </i:Interaction.Triggers>
+                    EventArgsConverter="{StaticResource TextCompositionEventArgsToStringConverter}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid 
+        Style="{StaticResource MainGridStyle}">
+        
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -102,10 +111,11 @@
                             Command="{Binding MakeZeroCurrentNumberCommand}"/>
                     <Button Content="C"/>
                     <Button Content="⌫"
-                            Command="{Binding EraseNumberCommand}"/>
-                    <Button Content="÷"
-                            CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"                            
+                            CommandParameter="{x:Static key:Key.Back}"
                             Command="{Binding CalculatorArithmeticOperationButtonCommand}"/>
+                    <Button Content="÷"                            
+                            Command="{Binding CalculatorArithmeticOperationButtonCommand}"
+                            CommandParameter="{x:Static key:Key.Divide}"/>
                     <Button Content="7" 
                             Style="{StaticResource NumericButtons}"
                             CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"
@@ -119,7 +129,7 @@
                             CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"
                             Style="{StaticResource NumericButtons}"/>
                     <Button Content="×"
-                            CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"
+                            CommandParameter="{x:Static key:Key.Multiply}"
                             Command="{Binding CalculatorArithmeticOperationButtonCommand}"/>
                     <Button Content="4"
                             Command="{Binding CalculatorNumberButtonClickCommand}"
@@ -134,7 +144,7 @@
                             CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"
                             Style="{StaticResource NumericButtons}"/>
                     <Button Content="−"
-                            CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"
+                            CommandParameter="{x:Static key:Key.Subtract}"
                             Command="{Binding CalculatorArithmeticOperationButtonCommand}"/>
                     <Button Content="1"
                             Command="{Binding CalculatorNumberButtonClickCommand}"
@@ -149,7 +159,7 @@
                             CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"
                             Style="{StaticResource NumericButtons}"/>
                     <Button Content="+"
-                            CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"
+                            CommandParameter="{x:Static key:Key.Add}"
                             Command="{Binding CalculatorArithmeticOperationButtonCommand}"/>
                     <Button Content="±"/>
                     <Button Content="0"
@@ -160,7 +170,7 @@
                             CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"
                             Command="{Binding CalculatorNumberButtonClickCommand}"/>
                     <Button Content="="
-                            CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"
+                            CommandParameter="{x:Static key:Key.Enter}"
                             Command="{Binding CalculatorArithmeticOperationButtonCommand}"/>
                 </UniformGrid>
 
