@@ -109,7 +109,8 @@
                     <Button Content="1/x"/>
                     <Button Content="CE"
                             Command="{Binding MakeZeroCurrentNumberCommand}"/>
-                    <Button Content="C"/>
+                    <Button Content="C"
+                            Command="{Binding CleanCurrentExpressionCommand}"/>
                     <Button Content="⌫"
                             CommandParameter="{x:Static key:Key.Back}"
                             Command="{Binding CalculatorArithmeticOperationButtonCommand}"/>
@@ -161,7 +162,8 @@
                     <Button Content="+"
                             CommandParameter="{x:Static key:Key.Add}"
                             Command="{Binding CalculatorArithmeticOperationButtonCommand}"/>
-                    <Button Content="±"/>
+                    <Button Content="±"
+                            Command="{Binding InverseSignOfNumberCommand}"/>
                     <Button Content="0"
                             Command="{Binding CalculatorNumberButtonClickCommand}"
                             CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource Self}}"
@@ -190,7 +192,7 @@
                          ScrollViewer.HorizontalScrollBarVisibility="Auto">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Label 
+                            <Label Height="30"
                                 Content="{Binding}"
                                 HorizontalAlignment="Stretch"
                                 HorizontalContentAlignment="Right"/>

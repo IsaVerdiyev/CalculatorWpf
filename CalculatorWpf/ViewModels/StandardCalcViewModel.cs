@@ -29,6 +29,7 @@ namespace CalculatorWpf.ViewModels
             {
                 Set(ref number, value);
                 CalculatorNumberButtonClickCommand.RaiseCanExecuteChanged();
+                InverseSignOfNumberCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -159,6 +160,7 @@ namespace CalculatorWpf.ViewModels
                         {
                             Number += input;
                         }
+                        GetRidOfFirstAdditionalZerosInNumber();
                     }),
                     input =>
                     {
@@ -175,15 +177,39 @@ namespace CalculatorWpf.ViewModels
         private RelayCommand eraseNumberCommand;
         public RelayCommand EraseNumberCommand
         {
-            get => eraseNumberCommand ?? (eraseNumberCommand = new RelayCommand(() => Number = Number?.Remove(Number.Count() - 1, 1)));
+            get => eraseNumberCommand ?? (eraseNumberCommand = new RelayCommand(() => Number = Number?.Remove(Number.Count() - 1, 1), () => Number.Count() > 0));
         }
 
         private RelayCommand makeZeroCurrentNumberCommand;
         public RelayCommand MakeZeroCurrentNumberCommand { get => makeZeroCurrentNumberCommand ?? (makeZeroCurrentNumberCommand = new RelayCommand(() => Number = "0")); }
 
 
-        
+        private RelayCommand inverseSignOfNumberCommand;
+        public RelayCommand InverseSignOfNumberCommand
+        {
+            get => inverseSignOfNumberCommand ?? (inverseSignOfNumberCommand = new RelayCommand(() =>
+            {
+                if (Number.First() != '-')
+                {
+                    Number = Number.Insert(0, "-");
+                }
+                else
+                {
+                    Number = Number.Remove(0, 1);
+                }
+            },() => Number != null && Number.Count() > 0));
+        }
 
+
+        private RelayCommand cleanCurrentExpressionCommand;
+        public RelayCommand CleanCurrentExpressionCommand {
+            get => cleanCurrentExpressionCommand ?? (cleanCurrentExpressionCommand = 
+                new RelayCommand(() => {
+                    Expression = "";
+                    Number = "0";
+                    calculator.CalculatorState = new InitialState(calculator) { Reset = true };
+                }));
+        } 
 
         #endregion
 
@@ -194,6 +220,24 @@ namespace CalculatorWpf.ViewModels
         {
             double.TryParse(numberText, out double number);
             return number;
+        }
+
+        void GetRidOfFirstAdditionalZerosInNumber()
+        {
+            if (Number == null || Number.Count() <= 1)
+            {
+                return;
+            }
+
+
+            if (Number[0] == '0')
+            {
+
+                if (Number[1] != ',')
+                {
+                    Number = Number.Remove(0, 1);
+                }
+            }
         }
 
         #endregion
